@@ -1,0 +1,91 @@
+name: "web-storage-development"
+services:
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin-nebalus-storage
+    ports:
+      - '8080:80'
+    environment:
+      - PMA_HOST=mysql
+    depends_on:
+      - mysql
+    networks:
+      - private-net
+      - public-net
+
+  # INTERN PORT: 3306
+  mysql:
+    build:
+      context: .
+      dockerfile: docker/mysql/Dockerfile
+      target: base
+    container_name: mysql-nebalus-storage
+    environment:
+      MYSQL_ROOT_PASSWORD: "12345"
+      MYSQL_DATABASE: "main"
+      MYSQL_USER: "admin"
+      MYSQL_PASSWORD: "12345"
+    volumes:
+      - /var/lib/mysql
+    networks:
+      - private-net
+
+  redis:
+    build:
+      context: .
+      dockerfile: docker/redis/Dockerfile
+      target: base
+    container_name: redis-nebalus-storage
+#    environment:
+#      REDIS_PASSWORD: "12345"
+#    command: [ "redis-server", "--requirepass", "$$REDIS_PASSWORD" ]
+    command: [ "redis-server" ]
+    networks:
+      - private-net
+
+  redis-exporter:
+    image: oliver006/redis_exporter:latest
+    container_name: redis-exporter-nebalus-storage
+    environment:
+      REDIS_ADDR: "redis:6379"
+#      REDIS_PASSWORD: "12345"
+    networks:
+      - private-net
+
+  elasticsearch:
+    image: elasticsearch:8.17.0
+    container_name: elasticsearch-nebalus-storage
+    environment:
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=12345
+      - xpack.security.enabled=true
+      - xpack.license.self_generated.type=basic
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - '9200:9200'
+    networks:
+      - public-net
+
+  kibana:
+    image: kibana:8.17.0
+    container_name: kibana-nebalus-storage
+    environment:
+      - XPACK_SECURITY_ENABLED=true
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=12345
+    ports:
+      - '5601:5601'
+    networks:
+      - public-net
+
+networks:
+  public-net:
+    name: public-net
+  private-net:
+    name: private-net
