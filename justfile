@@ -11,4 +11,4 @@ restart:
     {{dockerComposeDev}} up
 
 build:
-    {{dockerComposeDev}} build
+    {{dockerComposeDev}} build --no-cache

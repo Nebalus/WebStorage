@@ -1,19 +1,6 @@
 name: "web-storage-development"
 services:
 
-  phpmyadmin:
-    image: phpmyadmin
-    container_name: phpmyadmin-nebalus-storage
-    ports:
-      - '8080:80'
-    environment:
-      - PMA_HOST=mysql
-    depends_on:
-      - mysql
-    networks:
-      - private-net
-      - public-net
-
   # INTERN PORT: 3306
   mysql:
     build:
@@ -22,10 +9,10 @@ services:
       target: base
     container_name: mysql-nebalus-storage
     environment:
-      MYSQL_ROOT_PASSWORD: "12345"
+      MYSQL_ROOT_PASSWORD: "123456"
       MYSQL_DATABASE: "main"
       MYSQL_USER: "admin"
-      MYSQL_PASSWORD: "12345"
+      MYSQL_PASSWORD: "123456"
     volumes:
       - /var/lib/mysql
     networks:
@@ -49,39 +36,50 @@ services:
     container_name: redis-exporter-nebalus-storage
     environment:
       REDIS_ADDR: "redis:6379"
-#      REDIS_PASSWORD: "12345"
+#      REDIS_PASSWORD: "123456"
     networks:
       - private-net
 
   elasticsearch:
-    image: elasticsearch:8.17.0
+    build:
+      context: .
+      dockerfile: docker/elasticsearch/Dockerfile
+      target: base
     container_name: elasticsearch-nebalus-storage
     environment:
-      - discovery.type=single-node
-      - ELASTIC_PASSWORD=12345
-      - xpack.security.enabled=true
-      - xpack.license.self_generated.type=basic
+      - ELASTIC_PASSWORD=123456
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
     ports:
       - '9200:9200'
     networks:
       - public-net
 
   kibana:
-    image: kibana:8.17.0
+    build:
+      context: .
+      dockerfile: docker/kibana/Dockerfile
+      target: base
     container_name: kibana-nebalus-storage
     environment:
-      - XPACK_SECURITY_ENABLED=true
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-      - ELASTICSEARCH_USERNAME=kibana_system
-      - ELASTICSEARCH_PASSWORD=12345
     ports:
       - '5601:5601'
     networks:
+      - public-net
+    depends_on:
+      - elasticsearch
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin-nebalus-storage
+    ports:
+      - '8080:80'
+    environment:
+      - PMA_HOST=mysql
+    depends_on:
+      - mysql
+    networks:
+      - private-net
       - public-net
 
 networks:
