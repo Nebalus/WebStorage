@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: docker/mysql/Dockerfile
       target: base
-    container_name: mysql-nebalus-storage
+    container_name: nebalus-web-storage-mysql
     environment:
       MYSQL_ROOT_PASSWORD: "123456"
       MYSQL_DATABASE: "main"
@@ -16,62 +16,94 @@ services:
     volumes:
       - /var/lib/mysql
     networks:
-      - private-net
+      - storage-net
 
   redis:
     build:
       context: .
       dockerfile: docker/redis/Dockerfile
       target: base
-    container_name: redis-nebalus-storage
+    container_name: nebalus-web-storage-redis
 #    environment:
 #      REDIS_PASSWORD: "12345"
 #    command: [ "redis-server", "--requirepass", "$$REDIS_PASSWORD" ]
     command: [ "redis-server" ]
     networks:
-      - private-net
+      - storage-net
 
   redis-exporter:
     image: oliver006/redis_exporter:latest
-    container_name: redis-exporter-nebalus-storage
+    container_name: nebalus-web-storage-redis-exporter
     environment:
       REDIS_ADDR: "redis:6379"
 #      REDIS_PASSWORD: "123456"
     networks:
-      - private-net
+      - storage-net
+
+  prometheus:
+    build:
+      context: .
+      dockerfile: docker/prometheus/Dockerfile
+      target: base
+    container_name: nebalus-web-storage-prometheus
+    ports:
+      - '9393:9090'
+    networks:
+      - storage-net
+
+  grafana:
+    build:
+      context: .
+      dockerfile: docker/grafana/Dockerfile
+      target: base
+    container_name: nebalus-web-storage-grafana
+    ports:
+      - '3031:3000'
+    networks:
+      - storage-net
 
   elasticsearch:
     build:
       context: .
       dockerfile: docker/elasticsearch/Dockerfile
       target: base
-    container_name: elasticsearch-nebalus-storage
+    container_name: nebalus-web-storage-elasticsearch
     environment:
       - ELASTIC_PASSWORD=123456
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
     ports:
       - '9200:9200'
     networks:
-      - public-net
+      - storage-net
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl http://localhost:9200 | grep -q 'missing authentication credentials'"
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 60
 
   kibana:
     build:
       context: .
       dockerfile: docker/kibana/Dockerfile
       target: base
-    container_name: kibana-nebalus-storage
+    container_name: nebalus-web-storage-kibana
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     ports:
       - '5601:5601'
     networks:
-      - public-net
-    depends_on:
-      - elasticsearch
+      - storage-net
 
   phpmyadmin:
     image: phpmyadmin
-    container_name: phpmyadmin-nebalus-storage
+    container_name: nebalus-web-storage-pma
     ports:
       - '8080:80'
     environment:
@@ -79,11 +111,8 @@ services:
     depends_on:
       - mysql
     networks:
-      - private-net
-      - public-net
+      - storage-net
 
 networks:
-  public-net:
-    name: public-net
-  private-net:
-    name: private-net
+  storage-net:
+    name: nebalus-web-storage-development-net
