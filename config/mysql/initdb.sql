@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Jan 27, 2025 at 10:38 AM
+-- Generation Time: Jan 30, 2025 at 10:54 PM
 -- Server version: 9.1.0
--- PHP Version: 8.2.25
+-- PHP Version: 8.2.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -343,7 +343,7 @@ INSERT INTO `referrals` (`referral_id`, `owner_user_id`, `code`, `pointer`, `nam
 CREATE TABLE `referral_click_metric` (
                                          `click_id` int UNSIGNED NOT NULL,
                                          `referral_id` int UNSIGNED NOT NULL,
-                                         `ip_address` tinyblob NOT NULL,
+                                         `ip_address` tinyblob,
                                          `clicked_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -699,7 +699,17 @@ INSERT INTO `referral_click_metric` (`click_id`, `referral_id`, `ip_address`, `c
                                                                                                 (345, 1, '', '2025-01-19 19:19:26'),
                                                                                                 (346, 3, '', '2025-01-19 19:20:17'),
                                                                                                 (347, 3, '', '2025-01-19 19:20:18'),
-                                                                                                (348, 3, '', '2025-01-19 19:20:18');
+                                                                                                (348, 3, '', '2025-01-19 19:20:18'),
+                                                                                                (349, 6, 0x32383837313838343831, '2025-01-30 22:10:28'),
+                                                                                                (350, 6, 0x32383837313838343831, '2025-01-30 22:10:33'),
+                                                                                                (351, 6, 0x32383837313838343831, '2025-01-30 22:10:33'),
+                                                                                                (352, 6, 0x32383837313838343831, '2025-01-30 22:10:34'),
+                                                                                                (353, 6, 0x32383837313838343831, '2025-01-30 22:10:36'),
+                                                                                                (354, 6, 0x33323330303636353534, '2025-01-30 22:17:58'),
+                                                                                                (355, 6, 0x234504252ca1000000000567567323b5, '2025-01-30 22:47:34'),
+                                                                                                (356, 6, 0x32313434363638363833, '2025-01-30 22:48:13'),
+                                                                                                (357, 6, 0x32313434363638373834, '2025-01-30 22:48:38'),
+                                                                                                (358, 6, 0x20010db80a0b12f00000000000000001, '2025-01-30 22:49:48');
 
 -- --------------------------------------------------------
 
@@ -817,24 +827,24 @@ INSERT INTO `user_role_map` (`user_id`, `role_id`) VALUES
 --
 ALTER TABLE `accounts`
     ADD PRIMARY KEY (`account_id`),
-    ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `account_invitation_tokens`
 --
 ALTER TABLE `account_invitation_tokens`
     ADD PRIMARY KEY (`token_field_1`,`token_field_2`,`token_field_3`,`token_field_4`,`token_checksum`) USING BTREE,
-    ADD UNIQUE KEY `invited_user_id` (`invited_account_id`),
-    ADD KEY `owner_user_id` (`owner_account_id`);
+  ADD UNIQUE KEY `invited_user_id` (`invited_account_id`),
+  ADD KEY `owner_user_id` (`owner_account_id`);
 
 --
 -- Indexes for table `account_punishments`
 --
 ALTER TABLE `account_punishments`
     ADD PRIMARY KEY (`punishment_id`),
-    ADD KEY `punished_user_id` (`punished_account_id`),
-    ADD KEY `moderator_user_id` (`punisher_account_id`),
-    ADD KEY `account_punishments_ibfk_3` (`pardoner_account_id`);
+  ADD KEY `punished_user_id` (`punished_account_id`),
+  ADD KEY `moderator_user_id` (`punisher_account_id`),
+  ADD KEY `account_punishments_ibfk_3` (`pardoner_account_id`);
 
 --
 -- Indexes for table `apod`
@@ -847,36 +857,36 @@ ALTER TABLE `apod`
 --
 ALTER TABLE `apod_likes`
     ADD KEY `apod_likes_ibfk_1` (`apod_id`),
-    ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `blogs`
 --
 ALTER TABLE `blogs`
     ADD PRIMARY KEY (`blog_id`),
-    ADD KEY `blog_owner_id` (`blog_owner_id`);
+  ADD KEY `blog_owner_id` (`blog_owner_id`);
 
 --
 -- Indexes for table `forms`
 --
 ALTER TABLE `forms`
     ADD PRIMARY KEY (`form_id`),
-    ADD KEY `owner_user_id` (`owner_user_id`);
+  ADD KEY `owner_user_id` (`owner_user_id`);
 
 --
 -- Indexes for table `form_submits`
 --
 ALTER TABLE `form_submits`
     ADD PRIMARY KEY (`form_submit_id`),
-    ADD KEY `form_id` (`form_id`);
+  ADD KEY `form_id` (`form_id`);
 
 --
 -- Indexes for table `girl_game_instances`
 --
 ALTER TABLE `girl_game_instances`
     ADD PRIMARY KEY (`girl_game_id`),
-    ADD KEY `account_id` (`account_id`),
-    ADD KEY `girl_game_type` (`girl_game_type`);
+  ADD KEY `account_id` (`account_id`),
+  ADD KEY `girl_game_type` (`girl_game_type`);
 
 --
 -- Indexes for table `girl_game_types`
@@ -889,87 +899,87 @@ ALTER TABLE `girl_game_types`
 --
 ALTER TABLE `linktrees`
     ADD PRIMARY KEY (`linktree_id`),
-    ADD UNIQUE KEY `account` (`owner_user_id`);
+  ADD UNIQUE KEY `account` (`owner_user_id`);
 
 --
 -- Indexes for table `linktree_entrys`
 --
 ALTER TABLE `linktree_entrys`
     ADD PRIMARY KEY (`linktree_entry_id`),
-    ADD UNIQUE KEY `linktree_id` (`linktree_id`,`display_order`);
+  ADD UNIQUE KEY `linktree_id` (`linktree_id`,`display_order`);
 
 --
 -- Indexes for table `privileges`
 --
 ALTER TABLE `privileges`
     ADD PRIMARY KEY (`privilege_id`),
-    ADD UNIQUE KEY `privilege_node` (`privilege_node`);
+  ADD UNIQUE KEY `privilege_node` (`privilege_node`);
 
 --
 -- Indexes for table `projects`
 --
 ALTER TABLE `projects`
     ADD PRIMARY KEY (`project_id`),
-    ADD UNIQUE KEY `project_uuid` (`project_uuid`),
-    ADD KEY `owner_id` (`owner_user_id`);
+  ADD UNIQUE KEY `project_uuid` (`project_uuid`),
+  ADD KEY `owner_id` (`owner_user_id`);
 
 --
 -- Indexes for table `project_clients`
 --
 ALTER TABLE `project_clients`
     ADD PRIMARY KEY (`project_client_id`),
-    ADD UNIQUE KEY `client_uuid` (`client_uuid`);
+  ADD UNIQUE KEY `client_uuid` (`client_uuid`);
 
 --
 -- Indexes for table `referrals`
 --
 ALTER TABLE `referrals`
     ADD PRIMARY KEY (`referral_id`),
-    ADD UNIQUE KEY `refcode` (`code`) USING BTREE,
-    ADD KEY `user_id` (`owner_user_id`);
+  ADD UNIQUE KEY `refcode` (`code`) USING BTREE,
+  ADD KEY `user_id` (`owner_user_id`);
 
 --
 -- Indexes for table `referral_click_metric`
 --
 ALTER TABLE `referral_click_metric`
     ADD PRIMARY KEY (`click_id`),
-    ADD KEY `referral_id` (`referral_id`);
+  ADD KEY `referral_id` (`referral_id`);
 
 --
 -- Indexes for table `roles`
 --
 ALTER TABLE `roles`
     ADD PRIMARY KEY (`role_id`),
-    ADD UNIQUE KEY `group_name` (`name`);
+  ADD UNIQUE KEY `group_name` (`name`);
 
 --
 -- Indexes for table `role_privilege_map`
 --
 ALTER TABLE `role_privilege_map`
     ADD PRIMARY KEY (`privilege_id`,`role_id`),
-    ADD KEY `role_id` (`role_id`);
+  ADD KEY `role_id` (`role_id`);
 
 --
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
     ADD PRIMARY KEY (`user_id`),
-    ADD UNIQUE KEY `email` (`email`),
-    ADD UNIQUE KEY `username` (`username`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Indexes for table `user_login_log`
 --
 ALTER TABLE `user_login_log`
     ADD PRIMARY KEY (`access_log_id`),
-    ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `user_role_map`
 --
 ALTER TABLE `user_role_map`
     ADD PRIMARY KEY (`user_id`,`role_id`),
-    ADD KEY `group_id` (`role_id`);
+  ADD KEY `group_id` (`role_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -1057,7 +1067,7 @@ ALTER TABLE `referrals`
 -- AUTO_INCREMENT for table `referral_click_metric`
 --
 ALTER TABLE `referral_click_metric`
-    MODIFY `click_id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=349;
+    MODIFY `click_id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=359;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -1098,22 +1108,22 @@ ALTER TABLE `accounts`
 --
 ALTER TABLE `account_invitation_tokens`
     ADD CONSTRAINT `account_invitation_tokens_ibfk_2` FOREIGN KEY (`invited_account_id`) REFERENCES `accounts` (`account_id`) ON UPDATE RESTRICT,
-    ADD CONSTRAINT `account_invitation_tokens_ibfk_3` FOREIGN KEY (`owner_account_id`) REFERENCES `accounts` (`account_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `account_invitation_tokens_ibfk_3` FOREIGN KEY (`owner_account_id`) REFERENCES `accounts` (`account_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `account_punishments`
 --
 ALTER TABLE `account_punishments`
     ADD CONSTRAINT `account_punishments_ibfk_1` FOREIGN KEY (`punished_account_id`) REFERENCES `accounts` (`account_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-    ADD CONSTRAINT `account_punishments_ibfk_2` FOREIGN KEY (`punisher_account_id`) REFERENCES `accounts` (`account_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-    ADD CONSTRAINT `account_punishments_ibfk_3` FOREIGN KEY (`pardoner_account_id`) REFERENCES `accounts` (`account_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `account_punishments_ibfk_2` FOREIGN KEY (`punisher_account_id`) REFERENCES `accounts` (`account_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `account_punishments_ibfk_3` FOREIGN KEY (`pardoner_account_id`) REFERENCES `accounts` (`account_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `apod_likes`
 --
 ALTER TABLE `apod_likes`
     ADD CONSTRAINT `apod_likes_ibfk_1` FOREIGN KEY (`apod_id`) REFERENCES `apod` (`apod_id`) ON DELETE CASCADE ON UPDATE RESTRICT,
-    ADD CONSTRAINT `apod_likes_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+  ADD CONSTRAINT `apod_likes_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `blogs`
@@ -1138,7 +1148,7 @@ ALTER TABLE `form_submits`
 --
 ALTER TABLE `girl_game_instances`
     ADD CONSTRAINT `girl_game_instances_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`account_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-    ADD CONSTRAINT `girl_game_instances_ibfk_2` FOREIGN KEY (`girl_game_type`) REFERENCES `girl_game_types` (`girl_game_type`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `girl_game_instances_ibfk_2` FOREIGN KEY (`girl_game_type`) REFERENCES `girl_game_types` (`girl_game_type`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `linktrees`
@@ -1175,7 +1185,7 @@ ALTER TABLE `referral_click_metric`
 --
 ALTER TABLE `role_privilege_map`
     ADD CONSTRAINT `role_privilege_map_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE CASCADE ON UPDATE RESTRICT,
-    ADD CONSTRAINT `role_privilege_map_ibfk_3` FOREIGN KEY (`privilege_id`) REFERENCES `privileges` (`privilege_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `role_privilege_map_ibfk_3` FOREIGN KEY (`privilege_id`) REFERENCES `privileges` (`privilege_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_login_log`
@@ -1188,7 +1198,7 @@ ALTER TABLE `user_login_log`
 --
 ALTER TABLE `user_role_map`
     ADD CONSTRAINT `user_role_map_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-    ADD CONSTRAINT `user_role_map_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_role_map_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
