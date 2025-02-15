@@ -313,7 +313,7 @@ CREATE TABLE `referrals` (
                              `referral_id` int UNSIGNED NOT NULL,
                              `owner_user_id` int UNSIGNED NOT NULL,
                              `code` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-                             `pointer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+                             `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
                              `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
                              `disabled` bit(1) NOT NULL DEFAULT b'0',
                              `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -324,7 +324,7 @@ CREATE TABLE `referrals` (
 -- Daten für Tabelle `referrals`
 --
 
-INSERT INTO `referrals` (`referral_id`, `owner_user_id`, `code`, `pointer`, `name`, `disabled`, `created_at`, `updated_at`) VALUES
+INSERT INTO `referrals` (`referral_id`, `owner_user_id`, `code`, `url`, `name`, `disabled`, `created_at`, `updated_at`) VALUES
                                                                                                                                 (1, 1, '04bbH3G9', 'https://nebalus.dev', 'TEST Referral', b'0', '2024-02-25 00:00:00', '2024-09-28 15:35:26'),
                                                                                                                                 (3, 1, '3S5D6UmE', 'https://google.com', 'Hier zu google lol', b'0', '2024-02-25 00:00:00', '2024-09-28 15:35:26'),
                                                                                                                                 (5, 1, '6I6vP9ou', 'https://nebalus.dev', '42!', b'0', '2024-02-27 11:04:20', '2024-09-28 15:35:26'),
