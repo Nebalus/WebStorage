@@ -1173,7 +1173,8 @@ ALTER TABLE `projects`
 -- Constraints der Tabelle `referrals`
 --
 ALTER TABLE `referrals`
-    ADD CONSTRAINT `referrals_ibfk_1` FOREIGN KEY (`owner_user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+    ADD CONSTRAINT `referrals_ibfk_1` FOREIGN KEY (`owner_user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE RESTRICT,
+    MODIFY `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 
 --
 -- Constraints der Tabelle `referral_click_metric`
