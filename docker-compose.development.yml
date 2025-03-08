@@ -20,28 +20,6 @@ services:
     networks:
       - storage-net
 
-  redis:
-    build:
-      context: .
-      dockerfile: docker/redis/Dockerfile
-      target: base
-    container_name: nebalus-web-storage-redis
-#    environment:
-#      REDIS_PASSWORD: "12345"
-#    command: [ "redis-server", "--requirepass", "$$REDIS_PASSWORD" ]
-    command: [ "redis-server" ]
-    networks:
-      - storage-net
-
-  redis-exporter:
-    image: oliver006/redis_exporter:latest
-    container_name: nebalus-web-storage-redis-exporter
-    environment:
-      REDIS_ADDR: "redis:6379"
-#      REDIS_PASSWORD: "123456"
-    networks:
-      - storage-net
-
   prometheus:
     build:
       context: .
@@ -64,44 +42,44 @@ services:
     networks:
       - storage-net
 
-  elasticsearch:
-    build:
-      context: .
-      dockerfile: docker/elasticsearch/Dockerfile
-      target: base
-    container_name: nebalus-web-storage-elasticsearch
-    environment:
-      - ELASTIC_PASSWORD=123456
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
-    ports:
-      - '9200:9200'
-    networks:
-      - storage-net
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "curl http://localhost:9200 | grep -q 'missing authentication credentials'"
-        ]
-      interval: 10s
-      timeout: 10s
-      retries: 60
-
-  kibana:
-    build:
-      context: .
-      dockerfile: docker/kibana/Dockerfile
-      target: base
-    container_name: nebalus-web-storage-kibana
-    depends_on:
-      elasticsearch:
-        condition: service_healthy
-    environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-    ports:
-      - '5601:5601'
-    networks:
-      - storage-net
+#  elasticsearch:
+#    build:
+#      context: .
+#      dockerfile: docker/elasticsearch/Dockerfile
+#      target: base
+#    container_name: nebalus-web-storage-elasticsearch
+#    environment:
+#      - ELASTIC_PASSWORD=123456
+#      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+#    ports:
+#      - '9200:9200'
+#    networks:
+#      - storage-net
+#    healthcheck:
+#      test:
+#        [
+#          "CMD-SHELL",
+#          "curl http://localhost:9200 | grep -q 'missing authentication credentials'"
+#        ]
+#      interval: 10s
+#      timeout: 10s
+#      retries: 60
+#
+#  kibana:
+#    build:
+#      context: .
+#      dockerfile: docker/kibana/Dockerfile
+#      target: base
+#    container_name: nebalus-web-storage-kibana
+#    depends_on:
+#      elasticsearch:
+#        condition: service_healthy
+#    environment:
+#      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+#    ports:
+#      - '5601:5601'
+#    networks:
+#      - storage-net
 
   phpmyadmin:
     image: phpmyadmin
