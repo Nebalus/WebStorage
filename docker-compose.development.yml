@@ -20,28 +20,6 @@ services:
     networks:
       - storage-net
 
-  prometheus:
-    build:
-      context: .
-      dockerfile: docker/prometheus/Dockerfile
-      target: base
-    container_name: nebalus-web-storage-prometheus
-    ports:
-      - '9393:9090'
-    networks:
-      - storage-net
-
-  grafana:
-    build:
-      context: .
-      dockerfile: docker/grafana/Dockerfile
-      target: base
-    container_name: nebalus-web-storage-grafana
-    ports:
-      - '3031:3000'
-    networks:
-      - storage-net
-
 #  elasticsearch:
 #    build:
 #      context: .
