@@ -721,7 +721,7 @@ INSERT INTO `referral_click_metric` (`click_id`, `referral_id`, `ip_address`, `c
 CREATE TABLE `roles` (
                          `role_id` int UNSIGNED NOT NULL,
                          `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-                         `apply_on_user_creation` bit(1) NOT NULL DEFAULT b'0',
+                         `apply_on_every_user` bit(1) NOT NULL DEFAULT b'0',
                          `deletable` bit(1) NOT NULL DEFAULT b'1',
                          `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
                          `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -731,7 +731,7 @@ CREATE TABLE `roles` (
 -- Daten für Tabelle `roles`
 --
 
-INSERT INTO `roles` (`role_id`, `name`, `apply_on_user_creation`, `deletable`, `created_at`, `updated_at`) VALUES
+INSERT INTO `roles` (`role_id`, `name`, `apply_on_every_user`, `deletable`, `created_at`, `updated_at`) VALUES
                                                                                                                (1, 'administrator', b'0', b'0', '2024-12-06 19:39:38', '2024-12-06 19:44:34'),
                                                                                                                (2, 'user', b'1', b'0', '2024-12-06 19:40:22', '2024-12-06 19:44:34');
 
