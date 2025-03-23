@@ -74,7 +74,7 @@ CREATE TABLE `referrals` (
                              `owner_id` int UNSIGNED NOT NULL COMMENT 'FK = user_id',
                              `code` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
                              `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-                             `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+                             `label` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
                              `disabled` bit(1) NOT NULL DEFAULT b'0',
                              `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
                              `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -84,7 +84,7 @@ CREATE TABLE `referrals` (
 -- Daten für Tabelle `referrals`
 --
 
-INSERT INTO `referrals` (`referral_id`, `owner_id`, `code`, `url`, `name`, `disabled`, `created_at`, `updated_at`) VALUES
+INSERT INTO `referrals` (`referral_id`, `owner_id`, `code`, `url`, `label`, `disabled`, `created_at`, `updated_at`) VALUES
                                                                                                                        (15, 1, 'wZxfE3Ch', 'https://api.nebalus.dev', 'API', b'0', '2025-03-09 02:33:19', '2025-03-09 02:45:42'),
                                                                                                                        (16, 1, 'yHLaYU2m', 'https://www.youtube.com/watch?v=xvFZjo5PgG0', 'Rick Roll', b'0', '2025-03-09 14:41:01', '2025-03-09 17:36:05');
 
